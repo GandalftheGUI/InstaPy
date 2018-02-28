@@ -17,7 +17,12 @@ try:
 
   #session.like_by_tags(['utahgram', 'instautah', 'igutah', 'iloveutah', 'mountainlife', 'wowutah', 'rockymountains', 'adventureculture', 'optoutside', 'getoutdoors', 'hiking', 'hikeutah', 'utahisrad', 'adventureon', 'utahrocks', 'visitutah', 'exploreutah', 'iloveutah', 'beautahful', 'southernutah', 'utah'], amount=100)
 
-  possible_tags = ['morainelake', 'instautah', 'agameoftones', 'moodygrams', 'mg5k', 'beautifuldestinations', 'explorecanada', 'tourcanada', 'canada', 'banffnationalpark', 'banff', 'canadasworld', 'hikingadventures', 'discoverbanff', 'travelcanada', 'travelphotography', 'mybanff', 'canada', 'travel', 'adventure', 'hicanada', 'canada150', 'parkscanada', 'travelalberta', 'visitcanada', 'tourcanada', 'enjoycanada', 'takemetheretoday', 'imagesofcanada', 'paradiseCanada', 'canadaday']
+  possible_tags = ['morainelake', 'instautah', 'agameoftones', 'moodygrams', 'mg5k', 'beautifuldestinations', 
+  'explorecanada', 'tourcanada', 'canada', 'banffnationalpark', 'banff', 'canadasworld', 'hikingadventures', 
+  'discoverbanff', 'travelcanada', 'travelphotography', 'mybanff', 'canada', 'travel', 'adventure', 
+  'hicanada', 'canada150', 'parkscanada', 'travelalberta', 'visitcanada', 'tourcanada', 'enjoycanada', 
+  'takemetheretoday', 'imagesofcanada', 'paradiseCanada', 'canadaday']
+  
   tags = random.sample(possible_tags, 15)
 
 
