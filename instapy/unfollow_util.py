@@ -9,8 +9,8 @@ from .util import update_activity
 from .util import add_user_to_blacklist
 from .util import click_element
 from .print_log_writer import log_followed_pool
-from .print_log_writer import log_uncertain_unfollowed_pool
-from .print_log_writer import log_record_all_unfollowed
+#from .print_log_writer import log_uncertain_unfollowed_pool
+#from .print_log_writer import log_record_all_unfollowed
 from selenium.common.exceptions import NoSuchElementException
 import random
 import os
