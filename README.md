@@ -99,6 +99,21 @@ or
 ```
 4. Download ```chromedriver``` for your system [from here](https://sites.google.com/a/chromium.org/chromedriver/downloads). Extract the .zip file and put it in ```/assets``` folder.
 
+### Preferred Installation:
+
+The best way to install InstaPy is to create a virtualenv, install InstaPy there and run it from a separate file:
+
+```bash
+1. virtualenv venv
+2. source venv/bin/activate
+3. pip install git+https://github.com/timgrossmann/InstaPy.git
+```
+
+If you're not familiar with virtualenv, please [read about it here](https://virtualenv.pypa.io/en/stable/) and use it to your advantage.
+In essence, this is be the _only_ Python library you should install as root (e.g., with sudo). All other Python libraries should be inside a virtualenv.
+Now copy/paste the `quickstart.py` Python code below and run your first InstaPy script. Remember to run it with Python from the virtualenv, so from `venv/bin/python`. To make sure which Python is used, run `which python`, it will tell you which Python is 'active'.
+Running `source venv/bin/activate` will activate the correct Python to run InstaPy. To exit an activated virtualenv run `deactivate'.
+
 ### Set it up yourself with this Basic Setup
 
 Basic setup is a good way to test the tool. At project root folder open `quickstart.py` and update with your username and password.
@@ -290,13 +305,20 @@ session.interact_user_followers(['natgeo'], amount=10, randomize=True)
 # onlyInstapyMethod is using only when onlyInstapyFollowed = True
 # sleep_delay sets the time it will sleep every 10 profile unfollow, default
 # is 10min
-
 session.unfollow_users(amount=10, onlyInstapyFollowed = True, onlyInstapyMethod = 'FIFO', sleep_delay=60 )
 
 # You can only unfollow user that won't follow you back by adding
 # onlyNotFollowMe = True it still only support on profile following
 # you should disable onlyInstapyFollowed when use this
 session.unfollow_users(amount=10, onlyNotFollowMe=True, sleep_delay=60)
+
+# You can also unfollow users only after following them certain amount of time,
+# this will provide seamless unfollow activity without the notice of the targeted user
+# To use, just add `unfollow_after` argument with the desired time, e.g.
+session.unfollow_users(amount=10, onlyInstapyFollowed = True, onlyInstapyMethod = 'FIFO', sleep_delay=600, unfollow_after=48*60*60)
+# will unfollow users only after following them 48 hours (2 days), since `unfollow_after`s value
+# is seconds, you can simply give it `unfollow_after=100` to unfollow after 100 seconds,
+# but `1*60*60` (which is equal to 1 hour or 3600 seconds) style is a lot simpler to use 👍
 ```
 
 ### Don't unfollow active users
@@ -483,6 +505,17 @@ You can use InstaPy behind a proxy by specifying server address and port
 
 ```python
 session = InstaPy(username=insta_username, password=insta_password, proxy_address='8.8.8.8', proxy_port=8080)
+```
+
+To use proxy with authentication you should firstly generate proxy chrome extension (works only with Chrome and headless_browser=False).
+
+```python
+from proxy_extension import create_proxy_extension
+
+proxy = 'login:password@ip:port'
+proxy_chrome_extension = create_proxy_extension(proxy)
+
+session = InstaPy(username=insta_username, password=insta_password, proxy_chrome_extension=proxy_chrome_extension, nogui=True)
 ```
 
 ### Switching to Firefox

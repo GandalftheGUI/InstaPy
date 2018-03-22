@@ -486,7 +486,7 @@ def check_link(browser,
         sleep(1)
         num_followers = browser.execute_script(
             "return window._sharedData.entry_data."
-            "ProfilePage[0].user.followed_by.count")
+            "ProfilePage[0].graphql.user.edge_followed_by.count")
         browser.get(link)
         # update server calls
         update_activity()
@@ -529,8 +529,11 @@ def check_link(browser,
     for dont_likes_regex in dont_like_regex:
         quash = re.search(dont_likes_regex, image_text, re.IGNORECASE)
         if quash:
-            quashed = (quash.group(0)).split('#')[1]
-            iffy = (re.split(r'\W+', dont_likes_regex))[3]
+            quashed = (((quash.group(0)).split('#')[1]).split(' ')[0]).split('\n')[0]   # dismiss possible space and newlines
+            iffy = ((re.split(r'\W+', dont_likes_regex))[3] if dont_likes_regex.endswith('*([^\\d\\w]|$)') else   # 'word' without format
+                     (re.split(r'\W+', dont_likes_regex))[1] if dont_likes_regex.endswith('+([^\\d\\w]|$)') else   # '[word'
+                      (re.split(r'\W+', dont_likes_regex))[3] if dont_likes_regex.startswith('#[\\d\\w]+') else     # ']word'
+                       (re.split(r'\W+', dont_likes_regex))[1])                                                    # '#word'
             inapp_unit = ('Inappropriate! ~ contains \'{}\''.format(quashed) if quashed == iffy else
                               'Inappropriate! ~ contains \'{}\' in \'{}\''.format(iffy, quashed))
             return True, user_name, is_video, inapp_unit
@@ -540,9 +543,13 @@ def check_link(browser,
 
 def like_image(browser, username, blacklist, logger, logfolder):
     """Likes the browser opened image"""
-    like_elem = browser.find_elements_by_xpath(
-        "//a[@role='button']/span[text()='Like']/..")
-    if len(like_elem) == 1:
+    # fetch spans fast
+    spans = [x.text.lower() for x in browser.find_elements_by_xpath("//article//a[@role='button']/span")]
+
+    if 'like' in spans:
+        like_elem = browser.find_elements_by_xpath(
+            "//a[@role='button']/span[text()='Like']/..")
+
         # sleep real quick right before clicking the element
         sleep(2)
         click_element(browser, like_elem[0])
