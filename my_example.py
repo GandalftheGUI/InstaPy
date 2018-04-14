@@ -27,7 +27,8 @@ try:
 
 
   session.like_by_tags(tags, amount=100)
-
+except:
+    raise
 finally:
   """Ending the script"""
   # clears all the cookies, deleting you password and all information from this session
